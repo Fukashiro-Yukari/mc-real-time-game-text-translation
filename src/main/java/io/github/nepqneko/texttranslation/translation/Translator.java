@@ -92,7 +92,7 @@ public class Translator extends Thread {
     public void run() {
         if (IsFailed) {
             try {
-                long random = RandomUtils.nextLong(600000, 1200000);
+                long random = RandomUtils.nextLong(1200000, 2400000);
 
                 RealTimeGameTextTranslation.LOGGER.warn("Translation pause: Wait for " + (random / 1000) + " seconds");
 
@@ -147,7 +147,7 @@ public class Translator extends Thread {
         }
 
         try {
-            long random = RandomUtils.nextLong(1000, 5000);
+            long random = RandomUtils.nextLong(1000, 10000);
 
             Thread.sleep(random); //I do not have money...
         } catch (InterruptedException ignored) {
