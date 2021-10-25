@@ -163,5 +163,7 @@ public class RealTimeGameTextTranslation implements ClientModInitializer {
 
         ModConfigManager.initializeConfig();
         initTranslationFiles();
+
+        makeDirs(); // Nothing useful, just to solve the fucking warning.
     }
 }
