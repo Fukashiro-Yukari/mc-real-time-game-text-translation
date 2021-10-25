@@ -77,7 +77,7 @@ public class Translator extends Thread {
 
             obj.addProperty("key", key);
             obj.addProperty("code", response.code());
-            obj.addProperty("result", result);
+            obj.addProperty("result", reason);
 
             RealTimeGameTextTranslation.LOGGER.warn("Translation failed: " + obj);
             IsFailed = true;
