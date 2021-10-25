@@ -1,9 +1,11 @@
-# Fabric Example Mod
+# Real-time Game Text Translation Mod
 
-## Setup
+A Minecraft fabric mod can translate all texts that lack translation in real time
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+## Disclaimer
+
+Translation services are provided by Google.
 
 ## License
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+All code in this mod, except dependencies, or otherwise specified, are under GPL version 3.0.
