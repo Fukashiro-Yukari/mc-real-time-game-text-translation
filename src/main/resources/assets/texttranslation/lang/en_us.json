@@ -1,0 +1,9 @@
+{
+  "texttranslation.options": "Real-time Game Text Translation Options",
+  "option.modmenu.enable_debug": "Debug Log",
+  "option.modmenu.enable_debug.true": "Enabled",
+  "option.modmenu.enable_debug.false": "Disabled",
+  "option.modmenu.show_original_text": "Show original text",
+  "option.modmenu.show_original_text.true": "Shown",
+  "option.modmenu.show_original_text.false": "Hidden"
+}

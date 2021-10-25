@@ -1,34 +1,33 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "texttranslation",
   "version": "${version}",
-
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Real-time Game Text Translation",
+  "description": "Real-time translation of mod text missing in current language.",
   "authors": [
-    "Me!"
+    "NepQ Neko"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://github.com/NepQNeko/mc-real-time-game-text-translation",
+    "sources": "https://github.com/NepQNeko/mc-real-time-game-text-translation",
+    "issues": "https://github.com/NepQNeko/mc-real-time-game-text-translation/issues"
   },
-
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
-
-  "environment": "*",
+  "icon": "assets/texttranslation/icon.png",
+  "environment": "client",
   "entrypoints": {
-    "main": [
-      "net.fabricmc.example.ExampleMod"
+    "client": [
+      "io.github.nepqneko.texttranslation.RealTimeGameTextTranslation"
+    ],
+    "modmenu": [
+      "io.github.nepqneko.texttranslation.modmenu.ModMenu"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "texttranslation.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.11.3",
-    "fabric": "*",
     "minecraft": "1.17.x",
     "java": ">=16"
   },
