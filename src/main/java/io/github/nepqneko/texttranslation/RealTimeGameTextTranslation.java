@@ -113,10 +113,12 @@ public class RealTimeGameTextTranslation implements ClientModInitializer {
         Path path = Path.of(FabricLoader.getInstance().getConfigDir().toString(), MOD_ID, TL_GOOGLE);
         File dir = new File(path.toString());
         FilenameFilter filter = (f, name) -> name.endsWith(".json");
+        Type typeOfHashMap = new TypeToken<Map<String, String>>() {
+        }.getType();
 
         for (String name : Objects.requireNonNull(dir.list(filter))) {
             String lang = name.substring(0, name.indexOf('.'));
-            Path filepath = Path.of(path.toFile().toString(), name);
+            Path filepath = Path.of(path.toString(), name);
             String json = null;
 
             try {
@@ -128,32 +130,30 @@ public class RealTimeGameTextTranslation implements ClientModInitializer {
 
             if (json == null) continue;
 
-            Type typeOfHashMap = new TypeToken<Map<String, String>>() {
-            }.getType();
-
             TranslationsMap.put(lang, gson.fromJson(json, typeOfHashMap));
         }
 
         Path path2 = Path.of(FabricLoader.getInstance().getConfigDir().toString(), MOD_ID, TL_MANUAL);
-        Path filepath = Path.of(path2.toFile().toString(), "en_us.json");
+        File dir2 = new File(path2.toString());
 
-        if (!new File(filepath.toString()).exists()) return;
+        for (String name : Objects.requireNonNull(dir2.list(filter))) {
+            String lang = name.substring(0, name.indexOf('.'));
+            Path filepath = Path.of(path2.toString(), name);
+            String json = null;
 
-        String json = null;
+            try {
+                json = Files.readString(filepath);
+            } catch (IOException e) {
+                System.err.println("Couldn't open manual translation '" + name + "' file");
+                e.printStackTrace();
+            }
 
-        try {
-            json = Files.readString(filepath);
-        } catch (IOException e) {
-            System.err.println("Couldn't open manual translation 'en_us.json' file");
-            e.printStackTrace();
+            if (json == null) continue;
+            if (lang.equals("en_us"))
+                UntranslatedMap.putAll(gson.fromJson(json, typeOfHashMap));
+            else
+                TranslationsMap.put(lang, gson.fromJson(json, typeOfHashMap));
         }
-
-        if (json == null) return;
-
-        Type typeOfHashMap = new TypeToken<Map<String, String>>() {
-        }.getType();
-
-        UntranslatedMap.putAll(gson.fromJson(json, typeOfHashMap));
     }
 
     @Override
