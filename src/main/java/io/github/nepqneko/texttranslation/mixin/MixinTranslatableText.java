@@ -65,7 +65,7 @@ public abstract class MixinTranslatableText {
                     String newTranslation = translationsMap.get(key);
 
                     if (ModConfig.SHOW_ORIGINAL_TEXT.getValue())
-                        newTranslation += " (" + text + ")";
+                        newTranslation += "(" + text + ")";
 
                     translations.clear();
 
@@ -83,7 +83,8 @@ public abstract class MixinTranslatableText {
             if (isMiss) {
                 boolean hasThread = Translator.threads.containsKey(CurrentLanguage) && Translator.threads.get(CurrentLanguage).containsKey(key);
 
-                RealTimeGameTextTranslation.UntranslatedMap.put(key, text);
+                if (!RealTimeGameTextTranslation.UntranslatedMap.containsKey(key))
+                    RealTimeGameTextTranslation.UntranslatedMap.put(key, text);
 
                 if (!hasThread && ModConfig.ENABLE_DEBUG.getValue()) {
                     JsonObject obj = new JsonObject();
