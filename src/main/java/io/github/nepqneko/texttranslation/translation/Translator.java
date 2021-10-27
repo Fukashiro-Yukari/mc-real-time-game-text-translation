@@ -54,6 +54,16 @@ public class Translator extends Thread {
     private String GoogleTranslate(String text) throws Exception {
         if (text.isEmpty()) return null;
 
+        if (ModConfig.ENABLE_DEBUG.getValue()) {
+            JsonObject obj = new JsonObject();
+
+            obj.addProperty("key", key);
+            obj.addProperty("language", langTo);
+            obj.addProperty("text", text);
+
+            RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation send GET request: " + obj);
+        }
+
         OkHttpClient client = new OkHttpClient();
 
         HttpUrl url = new HttpUrl.Builder()
