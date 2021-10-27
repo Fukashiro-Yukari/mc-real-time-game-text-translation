@@ -15,6 +15,7 @@ import java.lang.management.ManagementFactory;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -162,7 +163,7 @@ public class Translator extends Thread {
             }
 
             if (!RealTimeGameTextTranslation.GoogleTranslationsMap.containsKey(langTo))
-                RealTimeGameTextTranslation.GoogleTranslationsMap.put(langTo, Maps.newHashMap());
+                RealTimeGameTextTranslation.GoogleTranslationsMap.put(langTo, new TreeMap<>());
 
             Map<String, String> newTranslations = RealTimeGameTextTranslation.GoogleTranslationsMap.get(langTo);
 

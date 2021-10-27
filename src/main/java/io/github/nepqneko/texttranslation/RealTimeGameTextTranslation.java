@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 public class RealTimeGameTextTranslation implements ClientModInitializer {
     public static final String FULL_NAME = "Real-time Game Text Translation";
@@ -39,7 +40,7 @@ public class RealTimeGameTextTranslation implements ClientModInitializer {
     public static CustomTranslationStorage EnglishTranslations = null;
     public static Map<String, Map<String, String>> GoogleTranslationsMap = Maps.newHashMap();
     public static Map<String, Map<String, String>> ManualTranslationsMap = Maps.newHashMap();
-    public static Map<String, String> UntranslatedMap = Maps.newHashMap();
+    public static Map<String, String> UntranslatedMap = new TreeMap<>();
     public static ArrayList<String> TranslationBlockKeys = new ArrayList<>();
     public static ArrayList<String> DontTranslationTexts = new ArrayList<>();
     public static boolean IsSuccessfullyLoaded = false;
