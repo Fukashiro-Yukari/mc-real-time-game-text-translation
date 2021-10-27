@@ -37,7 +37,8 @@ public class RealTimeGameTextTranslation implements ClientModInitializer {
     private static final String TL_MANUAL = "manual translation";
 
     public static CustomTranslationStorage EnglishTranslations = null;
-    public static Map<String, Map<String, String>> TranslationsMap = Maps.newHashMap();
+    public static Map<String, Map<String, String>> GoogleTranslationsMap = Maps.newHashMap();
+    public static Map<String, Map<String, String>> ManualTranslationsMap = Maps.newHashMap();
     public static Map<String, String> UntranslatedMap = Maps.newHashMap();
     public static ArrayList<String> TranslationBlockKeys = new ArrayList<>();
     public static ArrayList<String> DontTranslationTexts = new ArrayList<>();
@@ -83,9 +84,9 @@ public class RealTimeGameTextTranslation implements ClientModInitializer {
 
         Path path = Path.of(FabricLoader.getInstance().getConfigDir().toString(), MOD_ID, TL_GOOGLE);
 
-        for (String lang : TranslationsMap.keySet()) {
+        for (String lang : GoogleTranslationsMap.keySet()) {
             File file = new File(path.toFile(), lang + ".json");
-            String json = GSON.toJson(TranslationsMap.get(lang));
+            String json = GSON.toJson(GoogleTranslationsMap.get(lang));
 
             try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
                 fileWriter.write(json);
@@ -131,7 +132,7 @@ public class RealTimeGameTextTranslation implements ClientModInitializer {
 
             if (json == null) continue;
 
-            TranslationsMap.put(lang, gson.fromJson(json, typeOfHashMap));
+            GoogleTranslationsMap.put(lang, gson.fromJson(json, typeOfHashMap));
         }
 
         Path path2 = Path.of(FabricLoader.getInstance().getConfigDir().toString(), MOD_ID, TL_MANUAL);
@@ -153,7 +154,7 @@ public class RealTimeGameTextTranslation implements ClientModInitializer {
             if (lang.equals("en_us"))
                 UntranslatedMap.putAll(gson.fromJson(json, typeOfHashMap));
             else
-                TranslationsMap.put(lang, gson.fromJson(json, typeOfHashMap));
+                ManualTranslationsMap.put(lang, gson.fromJson(json, typeOfHashMap));
         }
     }
 

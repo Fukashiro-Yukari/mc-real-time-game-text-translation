@@ -60,8 +60,30 @@ public abstract class MixinTranslatableText {
         if (text.equals(english_text)) {
             boolean isMiss = false;
 
-            if (RealTimeGameTextTranslation.TranslationsMap.containsKey(CurrentLanguage)) {
-                Map<String, String> translationsMap = RealTimeGameTextTranslation.TranslationsMap.get(CurrentLanguage);
+            if (RealTimeGameTextTranslation.ManualTranslationsMap.containsKey(CurrentLanguage)) {
+                Map<String, String> translationsMap = RealTimeGameTextTranslation.ManualTranslationsMap.get(CurrentLanguage);
+
+                if (translationsMap.containsKey(key)) {
+                    String newTranslation = translationsMap.get(key);
+
+                    if (ModConfig.SHOW_ORIGINAL_TEXT.getValue())
+                        newTranslation += "(" + text + ")";
+
+                    translations.clear();
+
+                    try {
+                        setTranslation(newTranslation);
+                    } catch (TranslationException var4) {
+                        translations.clear();
+                        translations.add(StringVisitable.plain(newTranslation));
+                    }
+
+                    return;
+                }
+            }
+
+            if (RealTimeGameTextTranslation.GoogleTranslationsMap.containsKey(CurrentLanguage)) {
+                Map<String, String> translationsMap = RealTimeGameTextTranslation.GoogleTranslationsMap.get(CurrentLanguage);
 
                 if (translationsMap.containsKey(key)) {
                     String newTranslation = translationsMap.get(key);

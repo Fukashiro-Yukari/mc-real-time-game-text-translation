@@ -11,6 +11,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.lang3.RandomUtils;
 
+import java.lang.management.ManagementFactory;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Objects;
@@ -28,6 +29,8 @@ public class Translator extends Thread {
     private final String langTo;
     private final String text;
 
+    private long nowTime;
+
     public Translator(String key, String langTo, String text) {
         this.key = key;
         this.langTo = langTo;
@@ -40,6 +43,10 @@ public class Translator extends Thread {
             case 404 -> "Not Found"; // This will never happen unless google really changes the link
             default -> null;
         };
+    }
+
+    private long getNowTime() {
+        return (ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime() - nowTime) / 1000000;
     }
 
     private String GoogleTranslate(String text) throws Exception {
@@ -77,6 +84,7 @@ public class Translator extends Thread {
             }
 
             obj.addProperty("key", key);
+            obj.addProperty("runtime", getNowTime() + "ms");
             obj.addProperty("code", response.code());
             obj.addProperty("result", reason);
 
@@ -105,6 +113,17 @@ public class Translator extends Thread {
             IsFailed = false;
         }
 
+        if (ModConfig.ENABLE_DEBUG.getValue()) {
+            JsonObject obj = new JsonObject();
+
+            obj.addProperty("key", key);
+            obj.addProperty("language", langTo);
+            obj.addProperty("text", text);
+
+            RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation start: " + obj);
+        }
+
+        nowTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
         String result = null;
         Map<String, Thread> keyThreads = threads.get(langTo);
 
@@ -120,7 +139,8 @@ public class Translator extends Thread {
             JsonObject obj = new JsonObject();
 
             obj.addProperty("key", key);
-            obj.addProperty("result", exception.toString());
+            obj.addProperty("runtime", getNowTime() + "ms");
+            obj.addProperty("result", exception.getLocalizedMessage());
 
             RealTimeGameTextTranslation.LOGGER.warn("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation failed: " + obj);
 
@@ -135,15 +155,16 @@ public class Translator extends Thread {
                 JsonObject obj = new JsonObject();
 
                 obj.addProperty("key", key);
+                obj.addProperty("runtime", getNowTime() + "ms");
                 obj.addProperty("result", utf8Result);
 
                 RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation result: " + obj);
             }
 
-            if (!RealTimeGameTextTranslation.TranslationsMap.containsKey(langTo))
-                RealTimeGameTextTranslation.TranslationsMap.put(langTo, Maps.newHashMap());
+            if (!RealTimeGameTextTranslation.GoogleTranslationsMap.containsKey(langTo))
+                RealTimeGameTextTranslation.GoogleTranslationsMap.put(langTo, Maps.newHashMap());
 
-            Map<String, String> newTranslations = RealTimeGameTextTranslation.TranslationsMap.get(langTo);
+            Map<String, String> newTranslations = RealTimeGameTextTranslation.GoogleTranslationsMap.get(langTo);
 
             newTranslations.put(key, utf8Result);
         }
@@ -155,7 +176,8 @@ public class Translator extends Thread {
                 RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation pause: Wait for " + (random / 1000) + " seconds");
 
             Thread.sleep(random); //I do not have money...
-        } catch (InterruptedException ignored) {
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -166,6 +188,16 @@ public class Translator extends Thread {
         Map<String, Thread> keyThreads = threads.get(langTo);
 
         if (!keyThreads.containsKey(key)) {
+            if (ModConfig.ENABLE_DEBUG.getValue()) {
+                JsonObject obj = new JsonObject();
+
+                obj.addProperty("key", key);
+                obj.addProperty("language", langTo);
+                obj.addProperty("text", text);
+
+                RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation initialization: " + obj);
+            }
+
             Thread thread = new Thread(this, RealTimeGameTextTranslation.MOD_ID + "_" + key);
 
             es.submit(thread);
