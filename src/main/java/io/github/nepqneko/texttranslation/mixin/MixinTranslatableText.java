@@ -32,6 +32,27 @@ public abstract class MixinTranslatableText {
     @Final
     private List<StringVisitable> translations;
 
+    private static boolean isEmpty(final CharSequence cs) {
+        return cs == null || cs.length() == 0;
+    }
+
+    // Fuck me (IDE has swear word detection function ha ha ha ha)
+    private static String deleteAlphanumeric(final CharSequence cs) {
+        CharSequence cs2 = cs;
+
+        if (isEmpty(cs)) {
+            return (String) cs2;
+        }
+        final int sz = cs.length();
+        for (int i = 0; i < sz; i++) {
+            if (!Character.isLetterOrDigit(cs.charAt(i))) {
+                cs2 = ((String) cs2).replace(cs.charAt(i), Character.MIN_VALUE);
+            }
+        }
+
+        return (String) cs2;
+    }
+
     @Shadow
     protected abstract void setTranslation(String translation);
 
@@ -53,8 +74,15 @@ public abstract class MixinTranslatableText {
 
         if (text.equals(key) || text.isEmpty() || english_text.isEmpty()) return;
 
-        for (String text2 : RealTimeGameTextTranslation.DontTranslationTexts) {
-            if (text.equals(text2)) return;
+        String text2 = text;
+
+        text2 = text2.replaceAll("%s", "");
+        text2 = deleteAlphanumeric(text2.trim());
+
+        if (text2.isEmpty()) return;
+
+        for (String text3 : RealTimeGameTextTranslation.DontTranslationTexts) {
+            if (text.equals(text3)) return;
         }
 
         if (text.equals(english_text)) {
@@ -65,9 +93,6 @@ public abstract class MixinTranslatableText {
 
                 if (translationsMap.containsKey(key)) {
                     String newTranslation = translationsMap.get(key);
-
-                    if (ModConfig.SHOW_ORIGINAL_TEXT.getValue())
-                        newTranslation += "(" + text + ")";
 
                     translations.clear();
 

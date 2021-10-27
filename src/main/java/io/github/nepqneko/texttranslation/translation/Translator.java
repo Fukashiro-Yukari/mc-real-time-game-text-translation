@@ -25,6 +25,7 @@ public class Translator extends Thread {
     private static final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("Translator thread").build();
     private static final ExecutorService es = Executors.newSingleThreadExecutor(threadFactory);
     private static boolean IsFailed;
+    private static int tasksCount;
 
     private final String key;
     private final String langTo;
@@ -173,8 +174,12 @@ public class Translator extends Thread {
         try {
             long random = RandomUtils.nextLong(1000, 30000);
 
-            if (ModConfig.ENABLE_DEBUG.getValue())
+            tasksCount--;
+
+            if (ModConfig.ENABLE_DEBUG.getValue()) {
+                RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation tasks remaining: " + tasksCount);
                 RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation pause: Wait for " + (random / 1000) + " seconds");
+            }
 
             Thread.sleep(random); //I do not have money...
         } catch (InterruptedException e) {
@@ -189,6 +194,8 @@ public class Translator extends Thread {
         Map<String, Thread> keyThreads = threads.get(langTo);
 
         if (!keyThreads.containsKey(key)) {
+            tasksCount++;
+
             if (ModConfig.ENABLE_DEBUG.getValue()) {
                 JsonObject obj = new JsonObject();
 
@@ -197,6 +204,7 @@ public class Translator extends Thread {
                 obj.addProperty("text", text);
 
                 RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation initialization: " + obj);
+                RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation tasks remaining: " + tasksCount);
             }
 
             Thread thread = new Thread(this, RealTimeGameTextTranslation.MOD_ID + "_" + key);
