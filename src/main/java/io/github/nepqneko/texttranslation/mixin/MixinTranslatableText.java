@@ -95,7 +95,7 @@ public abstract class MixinTranslatableText {
                     obj.addProperty("language", CurrentLanguage);
                     obj.addProperty("text", text);
 
-                    RealTimeGameTextTranslation.LOGGER.info("(" + RealTimeGameTextTranslation.FULL_NAME + ") Untranslated text found: " + obj);
+                    RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Untranslated text found: " + obj);
                 }
 
                 new Translator(key, CurrentLanguage, english_text).start();

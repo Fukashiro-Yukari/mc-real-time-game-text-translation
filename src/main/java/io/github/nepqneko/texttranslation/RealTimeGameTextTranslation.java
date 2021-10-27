@@ -160,7 +160,7 @@ public class RealTimeGameTextTranslation implements ClientModInitializer {
     @Override
     @Environment(EnvType.CLIENT)
     public void onInitializeClient() {
-        LOGGER.info("(" + FULL_NAME + ") Initialize");
+        LOGGER.info("[" + FULL_NAME + "] Initialize");
 
         ModConfigManager.initializeConfig();
         initTranslationFiles();

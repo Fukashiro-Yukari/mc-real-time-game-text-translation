@@ -17,9 +17,9 @@ public class MixinTitleScreen {
             hasLog = true;
 
             if (RealTimeGameTextTranslation.IsSuccessfullyLoaded)
-                RealTimeGameTextTranslation.LOGGER.info("(" + RealTimeGameTextTranslation.FULL_NAME + ") Translation function is loaded");
+                RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation function is loaded");
             else
-                RealTimeGameTextTranslation.LOGGER.error("(" + RealTimeGameTextTranslation.FULL_NAME + ") Not loaded properly, translation function cannot be loaded");
+                RealTimeGameTextTranslation.LOGGER.error("[" + RealTimeGameTextTranslation.FULL_NAME + "] Not loaded properly, translation function cannot be loaded");
         }
     }
 }

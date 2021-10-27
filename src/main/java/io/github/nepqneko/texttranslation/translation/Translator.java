@@ -80,7 +80,7 @@ public class Translator extends Thread {
             obj.addProperty("code", response.code());
             obj.addProperty("result", reason);
 
-            RealTimeGameTextTranslation.LOGGER.warn("(" + RealTimeGameTextTranslation.FULL_NAME + ") Translation failed: " + obj);
+            RealTimeGameTextTranslation.LOGGER.warn("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation failed: " + obj);
             IsFailed = true;
 
             return null;
@@ -95,7 +95,7 @@ public class Translator extends Thread {
             try {
                 long random = RandomUtils.nextLong(1200000, 2400000);
 
-                RealTimeGameTextTranslation.LOGGER.warn("(" + RealTimeGameTextTranslation.FULL_NAME + ") Translation pause: Wait for " + (random / 1000) + " seconds");
+                RealTimeGameTextTranslation.LOGGER.warn("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation pause: Wait for " + (random / 1000) + " seconds");
 
                 Thread.sleep(random); //If google denies access, wait for a while and try
             } catch (InterruptedException e) {
@@ -122,7 +122,7 @@ public class Translator extends Thread {
             obj.addProperty("key", key);
             obj.addProperty("result", exception.toString());
 
-            RealTimeGameTextTranslation.LOGGER.warn("(" + RealTimeGameTextTranslation.FULL_NAME + ") Translation failed: " + obj);
+            RealTimeGameTextTranslation.LOGGER.warn("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation failed: " + obj);
 
             keyThreads.remove(key);
         }
@@ -137,7 +137,7 @@ public class Translator extends Thread {
                 obj.addProperty("key", key);
                 obj.addProperty("result", utf8Result);
 
-                RealTimeGameTextTranslation.LOGGER.info("(" + RealTimeGameTextTranslation.FULL_NAME + ") Translation result: " + obj);
+                RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation result: " + obj);
             }
 
             if (!RealTimeGameTextTranslation.TranslationsMap.containsKey(langTo))
