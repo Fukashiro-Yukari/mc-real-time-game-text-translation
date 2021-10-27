@@ -23,6 +23,7 @@ public class Translator extends Thread {
     private static final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("Translator thread").build();
     private static final ExecutorService es = Executors.newSingleThreadExecutor(threadFactory);
     private static boolean IsFailed;
+
     private final String key;
     private final String langTo;
     private final String text;
@@ -79,7 +80,7 @@ public class Translator extends Thread {
             obj.addProperty("code", response.code());
             obj.addProperty("result", reason);
 
-            RealTimeGameTextTranslation.LOGGER.warn("Translation failed: " + obj);
+            RealTimeGameTextTranslation.LOGGER.warn("(" + RealTimeGameTextTranslation.FULL_NAME + ") Translation failed: " + obj);
             IsFailed = true;
 
             return null;
@@ -94,10 +95,11 @@ public class Translator extends Thread {
             try {
                 long random = RandomUtils.nextLong(1200000, 2400000);
 
-                RealTimeGameTextTranslation.LOGGER.warn("Translation pause: Wait for " + (random / 1000) + " seconds");
+                RealTimeGameTextTranslation.LOGGER.warn("(" + RealTimeGameTextTranslation.FULL_NAME + ") Translation pause: Wait for " + (random / 1000) + " seconds");
 
                 Thread.sleep(random); //If google denies access, wait for a while and try
-            } catch (InterruptedException ignored) {
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
             IsFailed = false;
@@ -120,7 +122,7 @@ public class Translator extends Thread {
             obj.addProperty("key", key);
             obj.addProperty("result", exception.toString());
 
-            RealTimeGameTextTranslation.LOGGER.warn("Translation failed: " + obj);
+            RealTimeGameTextTranslation.LOGGER.warn("(" + RealTimeGameTextTranslation.FULL_NAME + ") Translation failed: " + obj);
 
             keyThreads.remove(key);
         }
@@ -135,7 +137,7 @@ public class Translator extends Thread {
                 obj.addProperty("key", key);
                 obj.addProperty("result", utf8Result);
 
-                RealTimeGameTextTranslation.LOGGER.info("Translation result: " + obj);
+                RealTimeGameTextTranslation.LOGGER.info("(" + RealTimeGameTextTranslation.FULL_NAME + ") Translation result: " + obj);
             }
 
             if (!RealTimeGameTextTranslation.TranslationsMap.containsKey(langTo))
@@ -147,7 +149,7 @@ public class Translator extends Thread {
         }
 
         try {
-            long random = RandomUtils.nextLong(1000, 10000);
+            long random = RandomUtils.nextLong(1000, 30000);
 
             Thread.sleep(random); //I do not have money...
         } catch (InterruptedException ignored) {

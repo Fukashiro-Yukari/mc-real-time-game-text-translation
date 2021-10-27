@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class RealTimeGameTextTranslation implements ClientModInitializer {
+    public static final String FULL_NAME = "Real-time Game Text Translation";
     public static final String NAME = "RealTimeGameTextTranslation";
     public static final String MOD_ID = "texttranslation";
     public static final Logger LOGGER = LogManager.getLogger(NAME);
@@ -38,9 +39,9 @@ public class RealTimeGameTextTranslation implements ClientModInitializer {
     public static CustomTranslationStorage EnglishTranslations = null;
     public static Map<String, Map<String, String>> TranslationsMap = Maps.newHashMap();
     public static Map<String, String> UntranslatedMap = Maps.newHashMap();
-
     public static ArrayList<String> TranslationBlockKeys = new ArrayList<>();
     public static ArrayList<String> DontTranslationTexts = new ArrayList<>();
+    public static boolean IsSuccessfullyLoaded = false;
 
     static {
         TranslationBlockKeys.add("attribute.modifier");
@@ -159,7 +160,7 @@ public class RealTimeGameTextTranslation implements ClientModInitializer {
     @Override
     @Environment(EnvType.CLIENT)
     public void onInitializeClient() {
-        LOGGER.info(NAME + " Initialize");
+        LOGGER.info("(" + FULL_NAME + ") Initialize");
 
         ModConfigManager.initializeConfig();
         initTranslationFiles();

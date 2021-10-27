@@ -35,8 +35,10 @@ public abstract class MixinTranslatableText {
     @Shadow
     protected abstract void setTranslation(String translation);
 
-    @Inject(at = @At("RETURN"), method = "updateTranslations()V")
+    @Inject(at = @At("TAIL"), method = "updateTranslations()V")
     private void updateTranslations(CallbackInfo ci) {
+        RealTimeGameTextTranslation.IsSuccessfullyLoaded = true;
+
         for (String block : RealTimeGameTextTranslation.TranslationBlockKeys) {
             if (key.contains(block)) return;
         }
@@ -93,7 +95,7 @@ public abstract class MixinTranslatableText {
                     obj.addProperty("language", CurrentLanguage);
                     obj.addProperty("text", text);
 
-                    RealTimeGameTextTranslation.LOGGER.info("Untranslated text found: " + obj);
+                    RealTimeGameTextTranslation.LOGGER.info("(" + RealTimeGameTextTranslation.FULL_NAME + ") Untranslated text found: " + obj);
                 }
 
                 new Translator(key, CurrentLanguage, english_text).start();
