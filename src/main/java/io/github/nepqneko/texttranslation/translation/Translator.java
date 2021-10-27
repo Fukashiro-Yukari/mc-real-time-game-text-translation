@@ -151,6 +151,9 @@ public class Translator extends Thread {
         try {
             long random = RandomUtils.nextLong(1000, 30000);
 
+            if (ModConfig.ENABLE_DEBUG.getValue())
+                RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation pause: Wait for " + (random / 1000) + " seconds");
+
             Thread.sleep(random); //I do not have money...
         } catch (InterruptedException ignored) {
         }
