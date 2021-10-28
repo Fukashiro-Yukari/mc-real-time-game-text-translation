@@ -54,15 +54,8 @@ public class Translator extends Thread {
     private String GoogleTranslate(String text) throws Exception {
         if (text.isEmpty()) return null;
 
-        if (ModConfig.ENABLE_DEBUG.getValue()) {
-            JsonObject obj = new JsonObject();
-
-            obj.addProperty("key", key);
-            obj.addProperty("language", langTo);
-            obj.addProperty("text", text);
-
-            RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation send GET request: " + obj);
-        }
+        RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] FUCK");
+        RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] " + new HttpUrl.Builder().scheme("https").host("fuckyou.com").build());
 
         OkHttpClient client = new OkHttpClient();
 
@@ -77,11 +70,31 @@ public class Translator extends Thread {
                 .addQueryParameter("q", text)
                 .build();
 
+        if (ModConfig.ENABLE_DEBUG.getValue()) {
+            JsonObject obj = new JsonObject();
+
+            obj.addProperty("key", key);
+            obj.addProperty("language", langTo);
+            obj.addProperty("text", text);
+
+            RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation send GET request: " + obj);
+        }
+
         Request request = new Request.Builder()
                 .url(url)
                 .get()
                 .build();
         Response response = client.newCall(request).execute();
+
+        if (ModConfig.ENABLE_DEBUG.getValue()) {
+            JsonObject obj = new JsonObject();
+
+            obj.addProperty("key", key);
+            obj.addProperty("language", langTo);
+            obj.addProperty("text", text);
+
+            RealTimeGameTextTranslation.LOGGER.info("[" + RealTimeGameTextTranslation.FULL_NAME + "] Translation Complete GET request: " + obj);
+        }
 
         client.dispatcher().cancelAll();
 

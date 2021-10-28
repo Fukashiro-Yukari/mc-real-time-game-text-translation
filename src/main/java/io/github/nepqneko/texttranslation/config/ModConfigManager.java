@@ -2,12 +2,11 @@ package io.github.nepqneko.texttranslation.config;
 
 import com.google.common.collect.Sets;
 import com.google.gson.*;
-import com.terraformersmc.modmenu.ModMenu;
-import com.terraformersmc.modmenu.config.option.BooleanConfigOption;
-import com.terraformersmc.modmenu.config.option.ConfigOptionStorage;
-import com.terraformersmc.modmenu.config.option.EnumConfigOption;
-import com.terraformersmc.modmenu.config.option.StringSetConfigOption;
 import io.github.nepqneko.texttranslation.RealTimeGameTextTranslation;
+import io.github.nepqneko.texttranslation.config.option.BooleanConfigOption;
+import io.github.nepqneko.texttranslation.config.option.ConfigOptionStorage;
+import io.github.nepqneko.texttranslation.config.option.EnumConfigOption;
+import io.github.nepqneko.texttranslation.config.option.StringSetConfigOption;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.*;
@@ -24,6 +23,7 @@ import java.util.stream.Collectors;
 public class ModConfigManager {
     private static File file;
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private static void prepareConfigFile() {
         if (file != null) {
             return;
@@ -31,10 +31,9 @@ public class ModConfigManager {
 
         Path path = Path.of(FabricLoader.getInstance().getConfigDir().toString(), RealTimeGameTextTranslation.MOD_ID);
         File dirs = new File(path.toString());
-        boolean make = false;
 
         if (!dirs.exists())
-            make = dirs.mkdirs();
+            dirs.mkdirs();
 
         file = new File(path.toFile(), "config.json");
     }
@@ -99,7 +98,6 @@ public class ModConfigManager {
 
     @SuppressWarnings("unchecked")
     public static void save() {
-        ModMenu.clearModCountCache();
         prepareConfigFile();
 
         JsonObject config = new JsonObject();

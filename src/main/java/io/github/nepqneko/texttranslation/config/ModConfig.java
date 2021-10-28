@@ -1,7 +1,7 @@
 package io.github.nepqneko.texttranslation.config;
 
-import com.terraformersmc.modmenu.config.option.BooleanConfigOption;
-import com.terraformersmc.modmenu.config.option.OptionConvertable;
+import io.github.nepqneko.texttranslation.config.option.BooleanConfigOption;
+import io.github.nepqneko.texttranslation.config.option.OptionConvertable;
 import net.minecraft.client.option.Option;
 
 import java.lang.reflect.Field;
